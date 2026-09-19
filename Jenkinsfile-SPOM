@@ -10,7 +10,7 @@ node('built-in')
     }
     stage('ConDeployment')
     {
-        sh 'scp /var/lib/jenkins/workspace/ScriptedPipelineOnMaster/webapp/target/webapp.war ubuntu@172.31.33.1:/var/lib/tomcat10/webapps/mastertestapp.war'
+        sh 'scp /var/lib/jenkins/workspace/ScriptedPipelineOnMaster/webapp/target/webapp.war ubuntu@172.31.33.1:/var/lib/tomcat10/webapps/spomtestapp.war'
     }
     stage('ConTesting')
     {
@@ -19,6 +19,6 @@ node('built-in')
     }
     stage('ConDelivery')
     {
-        sh 'scp /var/lib/jenkins/workspace/ScriptedPipelineOnMaster/webapp/target/webapp.war ubuntu@172.31.40.4:/var/lib/tomcat10/webapps/masterprodapp.war'
+        sh 'scp /var/lib/jenkins/workspace/ScriptedPipelineOnMaster/webapp/target/webapp.war ubuntu@172.31.40.4:/var/lib/tomcat10/webapps/spomprodapp.war'
     }
 }
