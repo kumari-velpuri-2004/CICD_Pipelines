@@ -1,0 +1,24 @@
+node('built-in')
+{
+    stage('ConDownload')
+    {
+        git 'https://github.com/IntelliqDevops/maven.git'
+    }
+    stage('ConBuild')
+    {
+        sh 'mvn package'
+    }
+    stage('ConDeployment')
+    {
+        sh 'scp /var/lib/jenkins/workspace/ScriptedPipelineOnMaster/webapp/target/webapp.war ubuntu@172.31.33.1:/var/lib/tomcat10/webapps/mastertestapp.war'
+    }
+    stage('ConTesting')
+    {
+        git 'https://github.com/IntelliqDevops/FunctionalTesting.git'
+        sh 'java -jar /var/lib/jenkins/workspace/ScriptedPipelineOnMaster/testing.jar'
+    }
+    stage('ConDelivery')
+    {
+        sh 'scp /var/lib/jenkins/workspace/ScriptedPipelineOnMaster/webapp/target/webapp.war ubuntu@172.31.40.4:/var/lib/tomcat10/webapps/masterprodapp.war'
+    }
+}
