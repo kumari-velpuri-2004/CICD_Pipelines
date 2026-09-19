@@ -1,0 +1,46 @@
+pipeline
+{
+    agent
+    {
+        label 'myslave'
+    }
+    stages
+    {
+        stage('ConDownload')
+        {
+            steps
+            {
+                git 'https://github.com/IntelliqDevops/maven.git'
+            }
+        }
+        stage('ConBuild')
+        {
+            steps
+            {
+                sh 'mvn package'
+            }
+        }
+        stage('ConDeployment')
+        {
+            steps
+            {
+                sh 'scp /home/ubuntu/myfolder/workspace/DeclarativePipelineonSlave/webapp/target/webapp.war ubuntu@172.31.33.1:/var/lib/tomcat10/webapps/dpostestapp.war'
+            }
+        }
+        stage('ConTesting')
+        {
+            steps
+            {
+                git 'https://github.com/IntelliqDevops/FunctionalTesting.git'
+                sh 'java -jar /home/ubuntu/myfolder/workspace/DeclarativePipelineonSlave/testing.jar'
+            }
+        }
+        stage('ConDelivery')
+        {
+            steps
+            {
+                sh 'scp /home/ubuntu/myfolder/workspace/DeclarativePipelineonSlave/webapp/target/webapp.war ubuntu@172.31.40.4:/var/lib/tomcat10/webapps/dposprodapp.war'
+            }
+        }
+    }
+}
